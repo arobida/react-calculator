@@ -7,13 +7,13 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			equation: [],
 			inputs: []
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleAllClear = this.handleAllClear.bind(this);
 		this.handleClear = this.handleClear.bind(this);
 		this.handleInput = this.handleInput.bind(this);
+		this.equation = this.equation.bind(this);
 	}
 
 	handleAllClear(e) {
@@ -22,13 +22,12 @@ class App extends Component {
 			inputs: []
 		});
 	}
-	// fix this fucking bullshit learn how to use array methods
 	handleClear(e) {
 		if (this.state.inputs.length === 0) {
 			return;
 		} else {
 			this.setState({
-				inputs: this.state.inputs.slice(0,-1)
+				inputs: this.state.inputs.slice(0, -1)
 			});
 			console.log(this.state.inputs);
 		}
@@ -41,17 +40,45 @@ class App extends Component {
 		console.log(this.state.inputs);
 	}
 
+	equation() {
+		// need to split the array on the operator and store the operator for comparison for the submit function
+		const inputs = this.state.inputs;
+		const ops = inputs.filter(
+			operator =>
+				operator === '+' ||
+				operator === '-' ||
+				operator === '*' ||
+				operator === '/'
+		);
+		function operator(a, b) {
+			if (ops[0] === '+') {
+				return a + b;
+			}
+			if (ops[0] === '-') {
+				return a - b;
+			}
+			if (ops[0] === '*') {
+				return a * b;
+			}
+			if (ops[0] === '/') {
+				return a / b;
+			}
+		}
+		const numbers = inputs.filter(nums => nums != ops);
+		const first = parseInt(numbers[0]);
+		const second = parseInt(numbers[1]);
+		const answer = operator(first, second);
+		console.log(answer);
+    return answer;
+	}
+
 	handleSubmit(e) {
 		e.preventDefault();
-		const answer = this.state.inputs.reduce((total, operator) => {
-			return total + operator;
+		const answer = this.equation();
+		this.setState({
+			inputs: [answer]
 		});
-		console.log(answer);
 	}
-	mulitply = (a, b) => a * b;
-	divide = (a, b) => a * b;
-	add = (a, b) => a + b;
-	subtract = (a, b) => a - b;
 	render() {
 		return (
 			<div className="App">
