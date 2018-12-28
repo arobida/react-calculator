@@ -65,11 +65,19 @@ class App extends Component {
 			}
 		}
 		const numbers = inputs.filter(nums => nums != ops);
-		const first = parseInt(numbers[0]);
-		const second = parseInt(numbers[1]);
+		let nums = joinNums(numbers, 2);
+		function joinNums(arr, size) {
+			let newArr = [];
+			for (var i = 0; i < arr.length; i += size) {
+				newArr.push(arr.slice(i, i + size));
+			}
+			return newArr;
+		}
+		const first = parseInt(nums[0].join(""));
+		const second = parseInt(nums[1].join(""));
 		const answer = operator(first, second);
-		console.log(answer);
-    return answer;
+		console.log(second);
+		return answer;
 	}
 
 	handleSubmit(e) {
